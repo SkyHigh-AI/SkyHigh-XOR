@@ -3,7 +3,7 @@
     "beforeBuildCommand": "npm run build",
     "beforeDevCommand": "npm run dev",
     "devPath": "http://localhost:5173",
-    "distDir": "../static"
+    "distDir": "../build"
   },
   "package": {
     "productName": "skyhigh-xor",
@@ -55,10 +55,10 @@
     "windows": [
       {
         "fullscreen": false,
-        "height": 600,
+        "height": 810,
         "resizable": true,
         "title": "SkyHigh XOR",
-        "width": 800
+        "width": 1440
       }
     ]
   }
