@@ -11,7 +11,23 @@
   },
   "tauri": {
     "allowlist": {
-      "all": false
+      "all": false,
+      "fs": {
+        "all": false,
+        "copyFile": false,
+        "createDir": true,
+        "exists": true,
+        "readDir": false,
+        "readFile": false,
+        "removeDir": false,
+        "removeFile": false,
+        "renameFile": false,
+        "scope": ["$APPDATA/*"],
+        "writeFile": false
+      },
+      "path": {
+        "all": true
+      }
     },
     "bundle": {
       "active": true,
@@ -28,7 +44,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "com.skyhigh.dev",
+      "identifier": "SkyHigh AI/XOR",
       "longDescription": "",
       "macOS": {
         "entitlements": null,

@@ -2,8 +2,15 @@
     import Ai from "../components/AI.svelte";
     import { onMount } from "svelte";
 
+    interface network{
+        id: number,
+        name: string,
+        hiddenNodes: number,
+        learnRate: number
+    }
+
     let anyNetworks: boolean = false;
-    const netowrkArray: any = [];
+    const netowrkArray: any = [{id: 0}];
 
     onMount(() => {
         anyNetworks = netowrkArray.length != 0;

@@ -22,7 +22,7 @@ pub struct Network {
     ihBias: Matrix,
     hoBias: Matrix,
 
-    learnRate: f64
+    pub learnRate: f64
 }
 
 impl Network {

@@ -1,7 +1,17 @@
+<script lang="ts">
+    import { invoke } from "@tauri-apps/api/tauri";
+    import { exists, createDir, BaseDirectory } from "@tauri-apps/api/fs";
+    import { onMount } from "svelte";
+
+    onMount(() => {
+        
+    })
+</script>
+
 <header class="flex border-b border-cotton/65 fixed w-screen h-[6.75rem] backdrop-blur-sm px-4">
     <img src="/skyHigh-Logo.png" alt="Logo" class="w-24 h-24 my-1" /> <!--Margin of the png is 0.75REM on x, 0.5REM on y. Add one on the y to make a square-->
     <nav class="flex grow justify-end items-center mr-3 my-1 space-x-3">
-        <button class="hover:text-neptune-300 hover:drop-shadow-navBtn flex h-fit transition-all duration-200 ease-out" title="New AI">
+        <button on:click={() => invoke('train_network')} class="hover:text-neptune-300 hover:drop-shadow-navBtn flex h-fit transition-all duration-200 ease-out" title="New AI">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
             </svg>              
