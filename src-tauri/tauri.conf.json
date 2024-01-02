@@ -44,7 +44,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "SkyHigh AI/XOR",
+      "identifier": "SkyHigh-XOR",
       "longDescription": "",
       "macOS": {
         "entitlements": null,
