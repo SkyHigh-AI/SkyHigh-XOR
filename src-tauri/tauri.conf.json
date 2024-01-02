@@ -17,13 +17,13 @@
         "copyFile": false,
         "createDir": true,
         "exists": true,
-        "readDir": false,
-        "readFile": false,
+        "readDir": true,
+        "readFile": true,
         "removeDir": false,
         "removeFile": false,
         "renameFile": false,
-        "scope": ["$APPDATA/*"],
-        "writeFile": false
+        "scope": ["$APPDATA/*", "$APPDATA/networks/*"],
+        "writeFile": true
       },
       "path": {
         "all": true
