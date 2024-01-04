@@ -20,13 +20,18 @@
         "readDir": true,
         "readFile": true,
         "removeDir": false,
-        "removeFile": false,
+        "removeFile": true,
         "renameFile": false,
         "scope": ["$APPDATA/*", "$APPDATA/networks/*"],
         "writeFile": true
       },
-      "path": {
-        "all": true
+      "dialog": {
+        "all": false,
+        "ask": false,
+        "confirm": true,
+        "message": true,
+        "open": false,
+        "save": false
       }
     },
     "bundle": {

@@ -6,20 +6,17 @@
     let networksArray: FileEntry[] = [];
     let loading = true;
 
-    onMount(() => {
-        async function newAI(){
-            let folderExists = await exists('confirmFile.txt', { dir: BaseDirectory.AppData });
-            if(!folderExists){
-                await createDir('networks', { dir: BaseDirectory.AppData, recursive: true });
-                await writeTextFile('confirmFile.txt',  'This file just confirms that the "networks" folder exists', { dir: BaseDirectory.AppData });
-            }
-
-            networksArray = await readDir('networks', { dir: BaseDirectory.AppData, recursive: true });
-            loading = false;
+    async function scanNetworkFolder(){
+        let folderExists = await exists('confirmFile.txt', { dir: BaseDirectory.AppData });
+        if(!folderExists){
+            await createDir('networks', { dir: BaseDirectory.AppData, recursive: true });
+            await writeTextFile('confirmFile.txt',  'This file just confirms that the "networks" folder exists', { dir: BaseDirectory.AppData });
         }
+        networksArray = await readDir('networks', { dir: BaseDirectory.AppData, recursive: true });
+        loading = false;
+    }
 
-        newAI();
-    });
+    onMount(scanNetworkFolder);
 </script>
 
 {#if loading}
@@ -37,7 +34,7 @@
     {:else}
     <main class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 px-4 py-3">
         {#each networksArray as network}
-            <Ai name={network.name} path={network.path}></Ai>
+            <Ai name={network.name} path={network.path} reloadFunc={scanNetworkFolder}></Ai>
         {/each}
     </main>
     {/if}
