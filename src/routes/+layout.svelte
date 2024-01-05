@@ -19,6 +19,8 @@
         newDesc = "";
         newLR = undefined;
         newHN = undefined;
+
+        window.location.reload();
     }
 </script>
 

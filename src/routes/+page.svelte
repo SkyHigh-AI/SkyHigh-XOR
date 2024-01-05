@@ -17,6 +17,7 @@
     }
 
     onMount(scanNetworkFolder);
+
 </script>
 
 {#if loading}
