@@ -1,6 +1,7 @@
 <script lang="ts">
     import { writeFile, BaseDirectory } from "@tauri-apps/api/fs";
     import { message } from "@tauri-apps/api/dialog";
+    import { page } from "$app/stores";
 
     let dialog: HTMLDialogElement, newName: string = "", newDesc: string = "", newLR: number | undefined = undefined, newHN: number | undefined = undefined;
 
@@ -12,7 +13,7 @@
 
         let tempDate = new Date();
         let newDate = `${tempDate.getMonth() + 1}/${tempDate.getDate()}/${tempDate.getFullYear()}`;
-        await writeFile(`networks/${newName}.txt`, `description:${newDesc};lr:${newLR};hn:${newHN};date:${newDate}`, { dir: BaseDirectory.AppData });
+        await writeFile(`networks/${newName}.txt`, `description:${newDesc};lr:${newLR};hn:${newHN};date:${newDate}hiddenNodes:${newHN};learnRate:${newLR};hasTrained:false;`, { dir: BaseDirectory.AppData });
         dialog.close();
 
         newName = "";
@@ -35,15 +36,15 @@
     </section>
     <section class="flex flex-col items-center space-y-4 w-full px-2 py-1">
         <section class="flex w-full space-x-4 px-6">
-            <input type="text" name="Name" bind:value={newName} class="rounded-md bg-midnight-700 outline-0 h-8 pl-2 w-full placeholder:italic" placeholder="Name">
-            <input type="text" name="Description" bind:value={newDesc} class="rounded-md bg-midnight-700 outline-0 h-8 pl-2 w-full placeholder:italic" placeholder="Description">
+            <input type="text" name="Name" bind:value={newName} autocomplete="off" class="rounded-md bg-midnight-700 outline-0 h-8 pl-2 w-full placeholder:italic" placeholder="Name">
+            <input type="text" name="Description" bind:value={newDesc} autocomplete="off" class="rounded-md bg-midnight-700 outline-0 h-8 pl-2 w-full placeholder:italic" placeholder="Description">
         </section>
         <section class="flex w-full space-x-4 px-6">
-            <input type="number" name="Learn-Rate" bind:value={newLR} class="rounded-md bg-midnight-700 outline-0 h-8 pl-2 w-full placeholder:italic" placeholder="Learn rate">
-            <input type="number" name="Hidden-Nodes" bind:value={newHN} class="rounded-md bg-midnight-700 outline-0 h-8 pl-2 w-full placeholder:italic" placeholder="Hidden nodes">
+            <input type="number" name="Learn-Rate" bind:value={newLR} autocomplete="off" class="rounded-md bg-midnight-700 outline-0 h-8 pl-2 w-full placeholder:italic" placeholder="Learn rate">
+            <input type="number" name="Hidden-Nodes" bind:value={newHN} autocomplete="off" class="rounded-md bg-midnight-700 outline-0 h-8 pl-2 w-full placeholder:italic" placeholder="Hidden nodes">
         </section>
         <button on:click={() => newAISubmit()} class="flex items-center mx-2 my-1 space-x-2 px-1.5 py-0.5 rounded-md hover:drop-shadow-[0_2px_3px_rgba(74,222,128,0.45)] hover:text-green-400 transition-all duration-200 ease-out">
-            <span class="text-2xl">Submit</span>
+            <span class="text-2xl">Create</span>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
             </svg>              
@@ -54,21 +55,23 @@
 <header class="flex border-b border-cotton/65 fixed w-screen h-[6.75rem] backdrop-blur-sm px-4">
     <img src="/skyHigh-Logo.png" alt="Logo" class="w-24 h-24 my-1" /> <!--Margin of the png is 0.75REM on x, 0.5REM on y. Add one on the y to make a square-->
     <nav class="flex grow justify-end items-center mr-3 my-1 space-x-3">
+        {#if $page.url.pathname === "/"}
         <button on:click={() => dialog.showModal()} class="hover:text-neptune-300 hover:drop-shadow-navBtn flex h-fit transition-all duration-200 ease-out" title="New AI">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
             </svg>              
         </button>
+        {/if}
         <a href="/" class="hover:text-neptune-300 hover:drop-shadow-navBtn flex h-fit transition-all duration-200 ease-out" title="Dash">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25A2.25 2.25 0 0 1 13.5 18v-2.25Z" />
             </svg>              
         </a>
-        <button class="hover:text-neptune-300 hover:drop-shadow-navBtn flex h-fit transition-all duration-200 ease-out" title="Profile">
+        <!-- <a href="/user" class="hover:text-neptune-300 hover:drop-shadow-navBtn flex h-fit transition-all duration-200 ease-out" title="Profile">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
             </svg>                         
-        </button>
+        </a> -->
     </nav>
 </header>
 <div class="min-h-screen pt-[6.75rem]">
