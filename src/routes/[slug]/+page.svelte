@@ -15,16 +15,20 @@
             hiddenNodes = parseInt(fileGuts.split("hiddenNodes:")[1].split(";")[0]);
             learnRate = parseFloat(fileGuts.split("learnRate:")[1].split(";")[0]);
 
-            let hasTrained: string = fileGuts.split("hasTrained:")[1].split(";")[0];
-            if(hasTrained === "false") return;
+            hasTrained = fileGuts.split("hasTrained:")[1].split(";")[0];
 
-            
+            let tempArary: number[] = [];
+            for(let i = 0; i < hiddenNodes; i++){
+                let tempNum = fileGuts.split(`hN${i}:`)[1].split(";")[0];
+                tempArary.push(parseFloat(tempNum));
+            }
+            hNArray = tempArary;
         }
 
         getItems();
     });
 
-    let name: string, description: string, date: string, hiddenNodes: number, learnRate: number;
+    let name: string, description: string, date: string, hiddenNodes: number, learnRate: number, hasTrained: string, hNArray: number[] = [];
 
 	export let data: PageData;
 </script>

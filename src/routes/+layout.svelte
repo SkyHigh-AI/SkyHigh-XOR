@@ -13,7 +13,14 @@
 
         let tempDate = new Date();
         let newDate = `${tempDate.getMonth() + 1}/${tempDate.getDate()}/${tempDate.getFullYear()}`;
-        await writeFile(`networks/${newName}.txt`, `description:${newDesc};lr:${newLR};hn:${newHN};date:${newDate}hiddenNodes:${newHN};learnRate:${newLR};hasTrained:false;`, { dir: BaseDirectory.AppData });
+
+        let hNArray: string[] = [];
+        for(let i = 0; i < newHN; i++){
+            hNArray.push(`hN${i}:0;`);
+        }
+        let hNString = hNArray.toString();
+
+        await writeFile(`networks/${newName}.txt`, `description:${newDesc};lr:${newLR};hn:${newHN};date:${newDate};hiddenNodes:${newHN};learnRate:${newLR};hasTrained:false;${hNString}`, { dir: BaseDirectory.AppData });
         dialog.close();
 
         newName = "";
