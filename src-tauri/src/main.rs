@@ -10,14 +10,18 @@ mod matrix;
 use network::Network;
 
 #[tauri::command]
-fn train_network(globalNetwork: tauri::State<Network>){
+fn trainNetwork(globalNetwork: tauri::State<Network>){
     println!("{}", globalNetwork.learnRate);
+}
+
+#[tauri::command]
+fn loadFromSave(globalNetwork: tauri::State<Network>, fileGuts: String){
 }
 
 fn main() {
     tauri::Builder::default()
         .manage(Network::new(2, 6, 2, 0.84))
-        .invoke_handler(tauri::generate_handler![train_network])
+        .invoke_handler(tauri::generate_handler![trainNetwork, loadFromSave])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
