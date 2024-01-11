@@ -9,6 +9,13 @@ mod matrix;
 
 use network::Network;
 
+fn fileSplit(inputStr: &str, splitStr: &str) -> String{
+    let firstSplit: Vec<&str> = inputStr.split(&splitStr).collect();
+    let secondSplit: Vec<&str> = firstSplit[1].split(";").collect();
+
+    return String::from(secondSplit[0]);
+}
+
 #[tauri::command]
 fn trainNetwork(globalNetwork: tauri::State<Network>){
     println!("{}", globalNetwork.learnRate);
