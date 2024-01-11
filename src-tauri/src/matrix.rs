@@ -44,6 +44,16 @@ impl Matrix {
         }
     }
 
+    pub fn loadVals(&mut self, vecIn: Vec<f64>){
+        let mut i: u8 = 0;
+        for (rowIndex, row) in self.grid.iter_mut().enumerate() {
+            for (colIndex, element) in row.iter_mut().enumerate() {
+                *element = vecIn[i];
+                i += 1;
+            }
+        }
+    }
+
     //#region With num
     pub fn scalarAdd(&mut self, val: f64) {
         for (rowIndex, row) in self.grid.iter_mut().enumerate() {
