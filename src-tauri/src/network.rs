@@ -49,6 +49,29 @@ impl Network {
         };
     }
 
+    pub fn load(learnRate: f64, hiddenNodes: f64, ihWeightsVec: Vec<f64>, hoWeightsVec: Vec<f64>, ihBiasVec: Vec<f64>, hoBiasVec: Vec<f64>) -> Network {
+        let mut ihWeights = Matrix::new(hiddenNodes, 2);
+        let mut hoWeights = Matrix::new(2, hiddenNodes);
+        let mut ihBias = Matrix::new(hiddenNodes, 1);
+        let mut hoBias = Matrix::new(2, 1);
+
+        ihWeights.loadVals(ihWeightsVec);
+        hoWeights.loadVals(hoWeightsVec);
+        ihBias.loadVals(ihBiasVec);
+        hoBias.loadVals(hoBiasVec);
+
+        return Network {
+            2,
+            hiddenNodes,
+            2,
+            ihWeights,
+            hoWeights,
+            ihBias,
+            hoBias,
+            learnRate
+        };
+    }
+
     pub fn guess(&self, inputV: &Vec<f64>) -> Vec<f64> {
         let inputM = Matrix::grow(inputV);
 
