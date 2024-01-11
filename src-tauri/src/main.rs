@@ -25,6 +25,16 @@ fn trainNetwork(globalNetwork: tauri::State<Network>){
 fn loadFromSave(globalNetwork: tauri::State<Network>, fileGuts: String){
     let learnRate = fileSplit(&fileGuts.as_str(), "lr:");
     let hiddenNodesNum = fileSplit(&fileGuts.as_str(), "hn:");
+    
+    let ihwVecLen = fileSplit(&fileGuts.as_str(), "ihwLen:").parse::<u8>();
+    let howVecLen = fileSplit(&fileGuts.as_str(), "howLen:").parse::<u8>();
+    let ihbVecLen = fileSplit(&fileGuts.as_str(), "ihbLen:").parse::<u8>();
+    let hobVecLen = fileSplit(&fileGuts.as_str(), "hobLen:").parse::<u8>();
+    
+    let mut ihWeightsVec: Vec<f64> = Vec::new();
+    let mut hoWeightsVec: Vec<f64> = Vec::new();
+    let mut ihBiasVec: Vec<f64> = Vec::new();
+    let mut hoBiasVec: Vec<f64> = Vec::new();
 }
 
 fn main() {
