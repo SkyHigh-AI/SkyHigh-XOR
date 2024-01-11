@@ -55,10 +55,10 @@ impl Network {
         let mut ihBias = Matrix::new(hiddenNodes, 1);
         let mut hoBias = Matrix::new(2, 1);
 
-        ihWeights.loadVals(ihWeightsVec);
-        hoWeights.loadVals(hoWeightsVec);
-        ihBias.loadVals(ihBiasVec);
-        hoBias.loadVals(hoBiasVec);
+        ihWeights.loadVals(&ihWeightsVec);
+        hoWeights.loadVals(&hoWeightsVec);
+        ihBias.loadVals(&ihBiasVec);
+        hoBias.loadVals(&hoBiasVec);
 
         return Network {
             2,
