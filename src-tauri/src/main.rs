@@ -23,6 +23,8 @@ fn trainNetwork(globalNetwork: tauri::State<Network>){
 
 #[tauri::command]
 fn loadFromSave(globalNetwork: tauri::State<Network>, fileGuts: String){
+    let learnRate = fileSplit(&fileGuts.as_str(), "learnRate:");
+    let hiddenNodesNum = fileSplit(&fileGuts.as_str(), "hiddenNodes:");
 }
 
 fn main() {
