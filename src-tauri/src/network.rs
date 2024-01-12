@@ -49,7 +49,7 @@ impl Network {
         };
     }
 
-    pub fn load(learnRate: f64, hiddenNodes: f64, ihWeightsVec: Vec<f64>, hoWeightsVec: Vec<f64>, ihBiasVec: Vec<f64>, hoBiasVec: Vec<f64>) -> Network {
+    pub fn load(learnRate: f64, hiddenNodes: u8, ihWeightsVec: Vec<f64>, hoWeightsVec: Vec<f64>, ihBiasVec: Vec<f64>, hoBiasVec: Vec<f64>) -> Network {
         let mut ihWeights = Matrix::new(hiddenNodes, 2);
         let mut hoWeights = Matrix::new(2, hiddenNodes);
         let mut ihBias = Matrix::new(hiddenNodes, 1);
@@ -61,9 +61,9 @@ impl Network {
         hoBias.loadVals(&hoBiasVec);
 
         return Network {
-            2,
+            inputNodes: 2,
             hiddenNodes,
-            2,
+            outputNodes: 2,
             ihWeights,
             hoWeights,
             ihBias,

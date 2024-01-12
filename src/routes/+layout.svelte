@@ -14,13 +14,18 @@
         let tempDate = new Date();
         let newDate = `${tempDate.getMonth() + 1}/${tempDate.getDate()}/${tempDate.getFullYear()}`;
 
-        let hNArray: string[] = [];
-        for(let i = 0; i < newHN; i++){
-            hNArray.push(`hN${i}:0;`);
+        let ihwArray: string[] = [], howArray: string[] = [], ihbArray: string[] = [], hobArray: string[] = [];
+        for (let i = 0; i < newHN * 2; i++) {
+            ihwArray.push(`ihw${i}:0;`);
+            howArray.push(`how${i}:0;`);
+            hobArray.push(`hob${i}:0;`);
         }
-        let hNString = hNArray.toString();
 
-        await writeFile(`networks/${newName}.txt`, `description:${newDesc};lr:${newLR};hn:${newHN};date:${newDate};hiddenNodes:${newHN};learnRate:${newLR};hasTrained:false;${hNString}`, { dir: BaseDirectory.AppData });
+        for (let i = 0; i < newHN; i++) {
+            ihbArray.push(`ihb${i}:0;`);
+        }
+
+        await writeFile(`networks/${newName}.txt`, `description:${newDesc};lr:${newLR};hn:${newHN};date:${newDate};hasTrained:false;${ihwArray.toString()}${howArray.toString()}${ihbArray.toString()}${hobArray.toString()}`, { dir: BaseDirectory.AppData });
         dialog.close();
 
         newName = "";

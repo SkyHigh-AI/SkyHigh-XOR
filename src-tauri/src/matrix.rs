@@ -45,7 +45,7 @@ impl Matrix {
     }
 
     pub fn loadVals(&mut self, vecIn: &Vec<f64>){
-        let mut i: u8 = 0;
+        let mut i: usize = 0;
         for (rowIndex, row) in self.grid.iter_mut().enumerate() {
             for (colIndex, element) in row.iter_mut().enumerate() {
                 *element = vecIn[i];

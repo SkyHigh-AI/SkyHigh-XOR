@@ -22,19 +22,26 @@ fn trainNetwork(globalNetwork: tauri::State<Network>){
 }
 
 #[tauri::command]
-fn loadFromSave(globalNetwork: tauri::State<Network>, fileGuts: String){
-    let learnRate = fileSplit(&fileGuts.as_str(), "lr:");
-    let hiddenNodesNum = fileSplit(&fileGuts.as_str(), "hn:");
-    
-    let ihwVecLen = fileSplit(&fileGuts.as_str(), "ihwLen:").parse::<u8>();
-    let howVecLen = fileSplit(&fileGuts.as_str(), "howLen:").parse::<u8>();
-    let ihbVecLen = fileSplit(&fileGuts.as_str(), "ihbLen:").parse::<u8>();
-    let hobVecLen = fileSplit(&fileGuts.as_str(), "hobLen:").parse::<u8>();
+fn loadFromSave(globalNetwork: tauri::State<Network>, fileGuts: String) -> bool{
+    let learnRate:f64 = fileSplit(&fileGuts.as_str(), "lr:").parse().unwrap();
+    let hiddenNodesNum:u8 = fileSplit(&fileGuts.as_str(), "hn:").parse().unwrap();
     
     let mut ihWeightsVec: Vec<f64> = Vec::new();
     let mut hoWeightsVec: Vec<f64> = Vec::new();
     let mut ihBiasVec: Vec<f64> = Vec::new();
     let mut hoBiasVec: Vec<f64> = Vec::new();
+
+    let tempRange = hiddenNodesNum * 2;
+    for i in 0..tempRange {
+        ihWeightsVec.push(fileSplit(&fileGuts.as_str(), format!("ihw{}:", i).as_str()).parse().unwrap());
+        hoWeightsVec.push(fileSplit(&fileGuts.as_str(), format!("how{}:", i).as_str()).parse().unwrap());
+        hoBiasVec.push(fileSplit(&fileGuts.as_str(), format!("hob{}:", i).as_str()).parse().unwrap());
+    }
+    for i in 0..hiddenNodesNum {
+        ihBiasVec.push(fileSplit(&fileGuts.as_str(), format!("ihb{}:", i).as_str()).parse().unwrap());
+    }
+
+    return true;
 }
 
 fn main() {
