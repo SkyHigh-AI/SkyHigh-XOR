@@ -8,6 +8,9 @@ mod network;
 mod matrix;
 
 use network::Network;
+use std::sync::Mutex;
+
+pub struct NetworkState(Mutex<Network>);
 
 fn fileSplit(inputStr: &str, splitStr: &str) -> String{
     let firstSplit: Vec<&str> = inputStr.split(&splitStr).collect();
@@ -17,37 +20,34 @@ fn fileSplit(inputStr: &str, splitStr: &str) -> String{
 }
 
 #[tauri::command]
-fn trainNetwork(globalNetwork: tauri::State<Network>){
-    println!("{}", globalNetwork.learnRate);
-}
+fn loadFromSave(state: tauri::State<NetworkState>, fileGuts: String){
+    let mut globalNetwork = state.0.lock().unwrap();
 
-#[tauri::command]
-fn loadFromSave(globalNetwork: tauri::State<Network>, fileGuts: String) -> bool{
     let learnRate:f64 = fileSplit(&fileGuts.as_str(), "lr:").parse().unwrap();
-    let hiddenNodesNum:u8 = fileSplit(&fileGuts.as_str(), "hn:").parse().unwrap();
+    let hiddenNodes:u8 = fileSplit(&fileGuts.as_str(), "hn:").parse().unwrap();
     
     let mut ihWeightsVec: Vec<f64> = Vec::new();
     let mut hoWeightsVec: Vec<f64> = Vec::new();
     let mut ihBiasVec: Vec<f64> = Vec::new();
     let mut hoBiasVec: Vec<f64> = Vec::new();
 
-    let tempRange = hiddenNodesNum * 2;
+    let tempRange = hiddenNodes * 2;
     for i in 0..tempRange {
         ihWeightsVec.push(fileSplit(&fileGuts.as_str(), format!("ihw{}:", i).as_str()).parse().unwrap());
         hoWeightsVec.push(fileSplit(&fileGuts.as_str(), format!("how{}:", i).as_str()).parse().unwrap());
         hoBiasVec.push(fileSplit(&fileGuts.as_str(), format!("hob{}:", i).as_str()).parse().unwrap());
     }
-    for i in 0..hiddenNodesNum {
+    for i in 0..hiddenNodes {
         ihBiasVec.push(fileSplit(&fileGuts.as_str(), format!("ihb{}:", i).as_str()).parse().unwrap());
     }
 
-    return true;
+    *globalNetwork = Network::load(learnRate, hiddenNodes, ihWeightsVec, hoWeightsVec, ihBiasVec, hoBiasVec);
 }
 
 fn main() {
     tauri::Builder::default()
-        .manage(Network::new(2, 6, 2, 0.84))
-        .invoke_handler(tauri::generate_handler![trainNetwork, loadFromSave])
+        .manage(NetworkState(Default::default()))
+        .invoke_handler(tauri::generate_handler![loadFromSave])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

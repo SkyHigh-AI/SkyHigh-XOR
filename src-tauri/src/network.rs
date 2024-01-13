@@ -25,6 +25,12 @@ pub struct Network {
     pub learnRate: f64
 }
 
+impl Default for Network {
+    fn default() -> Self {
+        return Network { learnRate: 0.0, inputNodes: 0, hiddenNodes: 0, outputNodes: 0, ihWeights: Matrix::default(), hoWeights: Matrix::default(), ihBias: Matrix::default(), hoBias: Matrix::default() }
+    }
+}
+
 impl Network {
     pub fn new(inputNodes: u8, hiddenNodes: u8, outputNodes: u8, learnRate: f64) -> Network {
         let mut ihWeights = Matrix::new(hiddenNodes, inputNodes);

@@ -8,6 +8,12 @@ pub struct Matrix {
     grid: Vec<Vec<f64>>,
 }
 
+impl Default for Matrix {
+    fn default() -> Self {
+        return Matrix { rows: 0, cols: 0, grid: Vec::new() }
+    }
+}
+
 impl Matrix {
     pub fn new(rows: u8, cols: u8) -> Matrix {
         let mut grid: Vec<Vec<f64>> = Vec::new();
