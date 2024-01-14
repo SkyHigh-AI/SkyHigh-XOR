@@ -7,13 +7,17 @@ export default {
         'spin-slow': 'spin 3s linear infinite',
       },
       height: {
-        'fullscreen': 'calc(100vh - 6.75rem)'
+        'fullscreen': 'calc(100vh - 6.75rem)',
+        'aiPage': 'calc(100vh - 6.75rem - 78px)'
       },
       minHeight: {
         'fullscreen': 'calc(100vh - 6.75rem)'
       },
       dropShadow: {
-        'navBtn': '0 4px 3px rgba(60, 116, 126, 0.65)'
+        'navBtn': '0 4px 3px rgba(60, 116, 126, 0.65)',
+        'aiBtn': '0 2px 3px rgba(192, 223, 225, 0.45)',
+        'greenBtn': '0 2px 3px rgba(74, 222, 128, 0.45)',
+        'redBtn': '0 2px 3px rgba(248, 113, 113, 0.45)'
       },
       colors: {
         'cotton': '#EFE6DD',

@@ -14,15 +14,15 @@ fn sigmoidPrime(x: f64) -> f64 {
 
 pub struct Network {
     inputNodes: u8,
-    hiddenNodes: u8,
+    pub hiddenNodes: u8,
     outputNodes: u8,
 
-    ihWeights: Matrix,
-    hoWeights: Matrix,
-    ihBias: Matrix,
-    hoBias: Matrix,
+    pub ihWeights: Matrix,
+    pub hoWeights: Matrix,
+    pub ihBias: Matrix,
+    pub hoBias: Matrix,
 
-    pub learnRate: f64
+    learnRate: f64
 }
 
 impl Default for Network {

@@ -18,11 +18,12 @@
         for (let i = 0; i < newHN * 2; i++) {
             ihwArray.push(`ihw${i}:0;`);
             howArray.push(`how${i}:0;`);
-            hobArray.push(`hob${i}:0;`);
         }
-
         for (let i = 0; i < newHN; i++) {
             ihbArray.push(`ihb${i}:0;`);
+        }
+        for (let i = 0; i < 2; i++){
+            hobArray.push(`hob${i}:0;`);
         }
 
         await writeFile(`networks/${newName}.txt`, `description:${newDesc};lr:${newLR};hn:${newHN};date:${newDate};hasTrained:false;${ihwArray.toString()}${howArray.toString()}${ihbArray.toString()}${hobArray.toString()}`, { dir: BaseDirectory.AppData });
@@ -40,7 +41,7 @@
 <dialog bind:this={dialog} class="bg-midnight-900 backdrop:backdrop-blur-[2px] sm:w-2/3 lg:w-1/2 2xl:w-1/3 text-cotton rounded">
     <section class="flex justify-between border-b border-cotton/65 px-2 py-1">
         <span class="text-4xl font-mono tracking-tight font-semibold">New Network</span>
-        <button on:click={() => dialog.close()} class="hover:text-red-400 hover:drop-shadow-[0_2px_3px_rgba(248,113,113,0.45)] transition-all duration-200 ease-out">
+        <button on:click={() => dialog.close()} class="hover:text-red-400 hover:drop-shadow-redBtn transition-all duration-200 ease-out">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
             </svg>
@@ -55,7 +56,7 @@
             <input type="number" name="Learn-Rate" bind:value={newLR} autocomplete="off" class="rounded-md bg-midnight-700 outline-0 h-8 pl-2 w-full placeholder:italic" placeholder="Learn rate">
             <input type="number" name="Hidden-Nodes" bind:value={newHN} autocomplete="off" class="rounded-md bg-midnight-700 outline-0 h-8 pl-2 w-full placeholder:italic" placeholder="Hidden nodes">
         </section>
-        <button on:click={() => newAISubmit()} class="flex items-center mx-2 my-1 space-x-2 px-1.5 py-0.5 rounded-md hover:drop-shadow-[0_2px_3px_rgba(74,222,128,0.45)] hover:text-green-400 transition-all duration-200 ease-out">
+        <button on:click={() => newAISubmit()} class="flex items-center mx-2 my-1 space-x-2 px-1.5 py-0.5 rounded-md hover:drop-shadow-greenBtn hover:text-green-400 transition-all duration-200 ease-out">
             <span class="text-2xl">Create</span>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />

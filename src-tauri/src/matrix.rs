@@ -5,7 +5,7 @@ use rand::Rng;
 pub struct Matrix {
     rows: u8,
     cols: u8,
-    grid: Vec<Vec<f64>>,
+    pub grid: Vec<Vec<f64>>,
 }
 
 impl Default for Matrix {
