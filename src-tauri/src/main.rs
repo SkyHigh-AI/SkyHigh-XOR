@@ -23,12 +23,27 @@ fn fileSplit(inputStr: &str, splitStr: &str) -> String{
 }
 
 #[tauri::command]
+fn networkGuess(state: tauri::State<NetworkState>, input1: String, input2: String) -> Vec<f64>{
+    let mut inputVec: Vec<f64> = Vec::new();
+    if input1 == "TRUE" { inputVec.push(1.0); }
+    else { inputVec.push(0.0); }
+
+    if input2 == "TRUE" { inputVec.push(1.0); }
+    else { inputVec.push(0.0); }
+
+    let globalNetwork = state.0.lock().unwrap();
+    let guess = globalNetwork.guess(&inputVec);
+
+    return guess;
+}
+
+#[tauri::command]
 fn trainNetwork(state: tauri::State<NetworkState>) -> String{
     let mut globalNetwork = state.0.lock().unwrap();
 
     let testData: [XORData; 4] = [XORData::new([1, 0], [1, 0]), XORData::new([0, 1], [1, 0]), XORData::new([1, 1], [0, 1]), XORData::new([0, 0], [0, 1])];
 
-    for i in 0..10 {
+    for i in 0..750000 {
         for x in &testData {
             globalNetwork.train(&x.vals, &x.ans);
         }
@@ -90,7 +105,7 @@ fn loadFromSave(state: tauri::State<NetworkState>, fileGuts: String){
 fn main() {
     tauri::Builder::default()
         .manage(NetworkState(Default::default()))
-        .invoke_handler(tauri::generate_handler![loadFromSave, trainNetwork])
+        .invoke_handler(tauri::generate_handler![loadFromSave, trainNetwork, networkGuess])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

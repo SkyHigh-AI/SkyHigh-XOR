@@ -2,7 +2,7 @@
     import type { PageData } from "./$types";
     import { onMount } from "svelte";
     import { invoke } from "@tauri-apps/api/tauri";
-    // import { confirm } from "@tauri-apps/api/dialog";
+    import { message } from "@tauri-apps/api/dialog";
     import { readTextFile, writeTextFile, BaseDirectory } from "@tauri-apps/api/fs";
 
     onMount(() => {
@@ -28,6 +28,8 @@
 
     let name: string, description: string, date: string, hiddenNodes: number, learnRate: number, hasTrained: boolean;
     let isLoading = true, isTraining = false;
+    let dialog: HTMLDialogElement, input1Val: string | undefined, input2Val: string | undefined;
+    let responses: string[] = [];
 
     async function trainAI(){
         isTraining = true;
@@ -39,8 +41,54 @@
         window.location.reload();
     }
 
+    async function checkSubmit(){
+        if(!input1Val || !input2Val){
+            await message("Some fields have not been filed out.\nPlease fill all fields before clicking sumbit :)", { title: "SkyHigh AI", type: "error"});
+            return;
+        }
+        if((input1Val.toUpperCase() != "TRUE" && input1Val.toUpperCase() != "FALSE") || (input2Val.toUpperCase() != "TRUE" && input2Val.toUpperCase() != "FALSE")){
+            await message("Some inputs do not equal the words true or false.\nPlease make sure the only words you enter are true or false :)", { title: "SkyHigh AI", type: "error"});
+            return;
+        }
+
+        let guess: number[] = await invoke('networkGuess', {input1: input1Val.toUpperCase(), input2: input2Val.toUpperCase()});
+        console.log(guess);
+
+        let tempArray = responses;
+        if(guess[0] > guess[1]) tempArray.push("True!");
+        else tempArray.push("False!");
+        responses = tempArray;
+
+        dialog.close();
+        input1Val = undefined;
+        input2Val = undefined;
+    }
+
 	export let data: PageData;
 </script>
+
+<dialog bind:this={dialog} class="bg-midnight-900 backdrop:backdrop-blur-[2px] sm:w-2/3 lg:w-1/2 2xl:w-1/3 text-cotton rounded">
+    <section class="flex justify-between border-b border-cotton/65 px-2 py-1">
+        <span class="text-4xl font-mono tracking-tight font-semibold">Use AI</span>
+        <button on:click={() => dialog.close()} class="hover:text-red-400 hover:drop-shadow-redBtn transition-all duration-200 ease-out">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+            </svg>
+        </button>
+    </section>
+    <section class="flex flex-col items-center space-y-4 w-full px-2 py-1">
+        <section class="flex w-full space-x-4 px-6">
+            <input type="text" bind:value={input1Val} name="Input 1" autocomplete="off" class="rounded-md bg-midnight-700 outline-0 h-8 pl-2 w-full placeholder:italic" placeholder="Input 1 (true/false)">
+            <input type="text" bind:value={input2Val} name="Input 2" autocomplete="off" class="rounded-md bg-midnight-700 outline-0 h-8 pl-2 w-full placeholder:italic" placeholder="Input 2 (true/false)">
+        </section>
+        <button on:click={() => checkSubmit()} class="flex items-center mx-2 my-1 space-x-2 px-1.5 py-0.5 rounded-md hover:drop-shadow-greenBtn hover:text-green-400 transition-all duration-200 ease-out">
+            <span class="text-2xl">Submit</span>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
+            </svg>              
+        </button>
+    </section>
+</dialog>
 
 {#if isLoading}
     <main class="min-h-fullscreen w-screen flex flex-col justify-center items-center px-4">
@@ -62,7 +110,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342M6.75 15a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm0 0v-3.675A55.378 55.378 0 0 1 12 8.443m-7.007 11.55A5.981 5.981 0 0 0 6.75 15.75v-1.5" />
                     </svg>
                 </button>
-                <button title="Use" disabled={!hasTrained} class="py-1 disabled:text-cotton/25 disabled:hover:cursor-not-allowed enabled:hover:text-neptune-200 enabled:hover:drop-shadow-aiBtn transition-all duration-150 ease-out">
+                <button on:click={() => dialog.showModal()} title="Use" disabled={!hasTrained} class="py-1 disabled:text-cotton/25 disabled:hover:cursor-not-allowed enabled:hover:text-neptune-200 enabled:hover:drop-shadow-aiBtn transition-all duration-150 ease-out">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.25" stroke="currentColor" class="w-12 h-12">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
                     </svg>
@@ -97,6 +145,11 @@
                     <p class="self-center px-1 text-center text-xl font-mono font-medium tracking-tight">You can't use this AI until you train it.<br/>Go to the top and click the graduation cap to get started!</p>
                 </div>
             {/if}
+            <div class="border h-full">
+                {#each responses as item}
+                    <span>{item}</span>
+                {/each}
+            </div>
         </aside>
     </main>
 {/if}
